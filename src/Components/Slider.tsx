@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { IGetMoviesResult } from "../api";
-import { makeImagePath } from "../utils";
+import { makeImagePath, sliderTitleFind } from "../utils";
 import { useNavigate, useMatch } from "react-router-dom";
 
 const SliderContent = styled.div`
@@ -18,7 +18,7 @@ const RowBox = styled.div`
 const Row = styled(motion.div)`
 	display: grid;
 	gap: 5px;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 	width: 100%;
 	position: absolute;
 `;
@@ -61,9 +61,9 @@ const SliderRightBox = styled(motion.div)`
 	right: 0;
 `;
 
-const Box = styled(motion.div) <{ bgPhoto: string }>`
+const Box = styled(motion.div) <{ bgphoto: string }>`
 	background-color: white;
-	background-image: url(${(props) => props.bgPhoto});
+	background-image: url(${(props) => props.bgphoto});
 	background-size: cover;
 	background-position: center center;
 	height: 300px;
@@ -166,23 +166,11 @@ function Slider({ data, infoName }: IProps) {
 			);
 		}
 		window.addEventListener("resize", handleResize); handleResize();
-		let title;
-		switch (infoName) {
-			case "now":
-				title = "Now Playing";
-				break;
-			case "popular":
-				title = "Popular";
-				break;
-			case "top":
-				title = "Top Rated";
-				break;
-		}
-		setSliderTitle(title as string);
+		setSliderTitle(sliderTitleFind(infoName as string) as string);
 	}, []);
 	const [offset, setOffet] = useState(6);
 	useEffect(() => {
-		const tmp = window.innerWidth / 200;
+		const tmp = Math.floor(window.innerWidth / 150);
 		setOffet(tmp > 6 ? 6 : tmp);
 	}, [windowSize])
 	const navigate = useNavigate();
@@ -272,7 +260,7 @@ function Slider({ data, infoName }: IProps) {
 									variants={boxVariants}
 									onClick={() => onBoxClicked(movie.id)}
 									transition={{ type: "tween" }}
-									bgPhoto={makeImagePath(movie.poster_path, "w300")}
+									bgphoto={makeImagePath(movie.poster_path, "w300")}
 								>
 									<Info variants={infoVariants}>
 										<h3>{movie.title}</h3>

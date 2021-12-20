@@ -47,3 +47,9 @@ export function getTopMovies() {
 		(response) => response.json()
 	);
 }
+
+export function getUpCmingMovies() {
+	return fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}

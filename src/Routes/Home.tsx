@@ -1,7 +1,13 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { motion, AnimatePresence, useViewportScroll, useAnimation } from "framer-motion";
-import { getNowMovies, IGetMoviesResult, getPopularMovies, getTopMovies } from "../api";
+import {
+	getNowMovies,
+	IGetMoviesResult,
+	getPopularMovies,
+	getTopMovies,
+	getUpCmingMovies
+} from "../api";
 import { makeImagePath } from "../utils";
 import { useEffect, useState } from "react";
 import { useNavigate, useMatch } from "react-router-dom";
@@ -39,6 +45,7 @@ function Home() {
 	const { data: nowData, isLoading: nowLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getNowMovies);
 	const { data: popuarData, isLoading: popuarLoading } = useQuery<IGetMoviesResult>(["movie", "popular"], getPopularMovies);
 	const { data: topData, isLoading: topLoading } = useQuery<IGetMoviesResult>(["movie", "top"], getTopMovies);
+	const { data: upData, isLoading: upLoading } = useQuery<IGetMoviesResult>(["movie", "up"], getUpCmingMovies);
 	return (
 		<Wrapper>
 			{nowLoading ? (<Loader>Loading...</Loader>
@@ -54,6 +61,10 @@ function Home() {
 						{topLoading ? (<Loader>Loading...</Loader>
 						) : (
 							<Slider data={topData} infoName="top" />
+						)}
+						{upLoading ? (<Loader>Loading...</Loader>
+						) : (
+							<Slider data={upData} infoName="up" />
 						)}
 					</SliderContainer>
 				</>

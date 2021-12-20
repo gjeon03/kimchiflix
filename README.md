@@ -2,8 +2,8 @@
 
 ## Components
 
-- Header[]
-- Slider Box[]
+- Header[o]
+- Slider Box[o]
 - Detail Box[]
 
 ## Routes
