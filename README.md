@@ -3,8 +3,8 @@
 ## Components
 
 - Header[]
-- Slider Movie[]
-- Movie Detail[]
+- Slider Box[]
+- Detail Box[]
 
 ## Routes
 
