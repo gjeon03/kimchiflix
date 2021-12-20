@@ -141,10 +141,11 @@ const Similar = styled.div<{ bgphoto: string }>`
 `;
 
 interface IProps {
-	id?: string;
+	id?: string,
+	routeName?: string,
 };
 
-function Detail({ id }: IProps) {
+function Detail({ id, routeName }: IProps) {
 	const detail = useQuery<IDetail>("detail", () => getMovieDetail(id as string) as any);
 	const similar = useQuery<ISimilar>("similar", () => getSimilarMovies(id as string) as any);
 	const navigate = useNavigate();

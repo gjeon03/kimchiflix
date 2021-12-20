@@ -43,18 +43,18 @@ function Home() {
 				<>
 					<BicBanner data={nowData?.results[0]} />
 					<SliderContainer>
-						<Slider data={nowData} infoName="now" />
+						<Slider data={nowData} infoName="now" routeName="movies" />
 						{popuarLoading ? (<Loader>Loading...</Loader>
 						) : (
-							<Slider data={popuarData} infoName="popular" />
+							<Slider data={popuarData} infoName="popular" routeName="movies" />
 						)}
 						{topLoading ? (<Loader>Loading...</Loader>
 						) : (
-							<Slider data={topData} infoName="top" />
+							<Slider data={topData} infoName="top" routeName="movies" />
 						)}
 						{upLoading ? (<Loader>Loading...</Loader>
 						) : (
-							<Slider data={upData} infoName="up" />
+							<Slider data={upData} infoName="up" routeName="movies" />
 						)}
 					</SliderContainer>
 				</>

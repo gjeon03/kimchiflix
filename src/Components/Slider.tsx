@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { IGetMoviesResult } from "../api";
+import { IGetMoviesResult, IGetTvsResult } from "../api";
 import { makeImagePath, sliderTitleFind } from "../utils";
 import { useNavigate, useMatch } from "react-router-dom";
 import Detail from "./Detail";
@@ -153,12 +153,19 @@ const sliderBtn = {
 	},
 };
 
-interface IProps {
+interface IMovieProps {
 	data?: IGetMoviesResult;
 	infoName: string;
+	routeName: string;
 };
 
-function Slider({ data, infoName }: IProps) {
+interface ITvProps {
+	data?: IGetTvsResult;
+	infoName: string;
+	routeName: string;
+};
+
+function Slider({ data, infoName, routeName }: IMovieProps | ITvProps) {
 	const [sliderTitle, setSliderTitle] = useState("");
 	const [windowSize, setWindowSize] = useState<number | undefined>();
 	useEffect(() => {
@@ -178,7 +185,7 @@ function Slider({ data, infoName }: IProps) {
 		setOffet(tmp > 6 ? 6 : tmp);
 	}, [windowSize]);
 	const navigate = useNavigate();
-	const bigMovieMatch = useMatch("/movies/:movieId");
+	const bigMovieMatch = useMatch(`/${routeName}/:movieId`);
 	const [leaving, setLeaving] = useState(false);
 	const [index, setIndex] = useState(0);
 	const [btnFlag, setBtnFlag] = useState(true);
@@ -198,7 +205,7 @@ function Slider({ data, infoName }: IProps) {
 	};
 	const toggleLeaving = () => setLeaving((prev) => !prev);
 	const onBoxClicked = (movieId: number) => {
-		navigate(`/movies/${movieId}`);
+		navigate(`/${routeName}/${movieId}`);
 	};
 	return (
 		<>
@@ -268,7 +275,7 @@ function Slider({ data, infoName }: IProps) {
 										bgphoto={makeImagePath(movie.poster_path, "w300")}
 									>
 										<Info variants={infoVariants}>
-											<h3>{movie.title}</h3>
+											<h3>{routeName !== "tv" ? movie.title : movie.name}</h3>
 											<span>{movie.release_date}</span>
 											<span>⭐️ {movie.vote_average} / 10</span>
 										</Info>

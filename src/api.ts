@@ -8,15 +8,9 @@ export interface IMovie {
 	poster_path: string;
 	title: string;
 	overview: string;
-	adult: boolean
-	genre_ids: []
-	original_language: string
-	original_title: string
-	popularity: 10213.258
-	release_date: string
-	video: false
-	vote_average: number
-	vote_count: number
+	release_date: string,
+	vote_average: number,
+	name: string,
 }
 
 export interface IGetMoviesResult {
@@ -68,6 +62,45 @@ export function getVideos(movieId:string) {
 
 export function getSimilarMovies(movieId:string) {
 	return fetch(`${BASE_PATH}/movie/${movieId}/similar?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}
+
+export interface ITv {
+	id: number;
+	backdrop_path: string;
+	poster_path: string;
+	name: string;
+	overview: string;
+	first_air_date: string,
+	vote_average: number,
+}
+
+export interface IGetTvsResult {
+	page: number;
+	results: IMovie[];
+}
+
+export function getOnTheAirTv() {
+	return fetch(`${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}
+
+export function getAiringTodayTv() {
+	return fetch(`${BASE_PATH}/tv/airing_today?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}
+
+export function getPopularTv() {
+	return fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}
+
+export function getTopRatedTv() {
+	return fetch(`${BASE_PATH}/tv/top_rated?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
 		(response) => response.json()
 	);
 }
