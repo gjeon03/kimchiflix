@@ -263,7 +263,7 @@ function Slider({ data, infoName, routeName }: IMovieProps | ITvProps) {
 							{data?.results
 								.slice(0)
 								.slice(offset * index, offset * index + offset)
-								.map((movie) => (
+								.map((movie: any) => (
 									<Box
 										layoutId={infoName + movie.id}
 										key={movie.id}

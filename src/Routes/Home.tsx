@@ -41,7 +41,7 @@ function Home() {
 			{nowLoading ? (<Loader>Loading...</Loader>
 			) : (
 				<>
-					<BicBanner data={nowData?.results[0]} />
+					<BicBanner data={nowData?.results[0]} releaseDate={nowData?.results[0].release_date} routeName="movies" />
 					<SliderContainer>
 						<Slider data={nowData} infoName="now" routeName="movies" />
 						{popuarLoading ? (<Loader>Loading...</Loader>

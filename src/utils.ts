@@ -17,6 +17,15 @@ export function sliderTitleFind(infoName: string) {
 		case "up":
 			title = "Up Coming";
 			break;
+		case "on":
+			title = "On The Air";
+			break;
+		case "air":
+			title = "Airing Today";
+			break;
+		case "top":
+			title = "Top Rated";
+			break;
 	}
 	return title;
 }

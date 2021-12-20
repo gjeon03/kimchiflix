@@ -2,6 +2,8 @@ const API_KEY = "f5fe15e46c765a1c3bf914a1973efc89";
 const BASE_PATH = "https://api.themoviedb.org/3";
 const LANGUAGE_PATH = "language=ko";
 
+// Movie
+
 export interface IMovie {
 	id: number;
 	backdrop_path: string;
@@ -11,6 +13,7 @@ export interface IMovie {
 	release_date: string,
 	vote_average: number,
 	name: string,
+	media_type: string,
 }
 
 export interface IGetMoviesResult {
@@ -66,6 +69,8 @@ export function getSimilarMovies(movieId:string) {
 	);
 }
 
+// Tv
+
 export interface ITv {
 	id: number;
 	backdrop_path: string;
@@ -74,11 +79,13 @@ export interface ITv {
 	overview: string;
 	first_air_date: string,
 	vote_average: number,
+	title: string,
+	media_type: string,
 }
 
 export interface IGetTvsResult {
 	page: number;
-	results: IMovie[];
+	results: ITv[];
 }
 
 export function getOnTheAirTv() {
@@ -101,6 +108,32 @@ export function getPopularTv() {
 
 export function getTopRatedTv() {
 	return fetch(`${BASE_PATH}/tv/top_rated?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}
+
+// Search
+
+export interface ISearch {
+	id: number;
+	backdrop_path: string;
+	poster_path: string;
+	name: string;
+	overview: string;
+	first_air_date: string,
+	vote_average: number,
+	title: string,
+	media_type: string,
+	release_date: string,
+}
+
+export interface IGetSearchResult {
+	page: number;
+	results: ISearch[];
+}
+
+export function getSearch(keyword:string, page:string) {
+	return fetch(`${BASE_PATH}/search/multi?api_key=${API_KEY}&${LANGUAGE_PATH}&query=${keyword}&page=${page}&include_adult=false`).then(
 		(response) => response.json()
 	);
 }

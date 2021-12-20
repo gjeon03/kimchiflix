@@ -41,7 +41,7 @@ function Tv() {
 			{onLoading ? (<Loader>Loading...</Loader>
 			) : (
 				<>
-					<BicBanner data={onData?.results[0]} />
+					<BicBanner data={onData?.results[0]} releaseDate={onData?.results[0].first_air_date} routeName="tv" />
 					<SliderContainer>
 						<Slider data={onData} infoName="on" routeName="tv" />
 						{popuarLoading ? (<Loader>Loading...</Loader>

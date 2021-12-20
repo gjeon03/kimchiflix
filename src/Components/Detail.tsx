@@ -152,9 +152,8 @@ function Detail({ id, routeName }: IProps) {
 	const { scrollY } = useViewportScroll();
 	const onOverlayClick = () => navigate("/");
 	const onSimilarClick = (movieId: number) => {
-		navigate(`/movies/${movieId}`);
+		navigate(`/${routeName}/${movieId}`);
 	}
-	console.log(similar);
 	return (
 		<>
 			<Overlay
@@ -202,12 +201,13 @@ function Detail({ id, routeName }: IProps) {
 								{similar.data?.results.map((item, index) => {
 									if (index > 5) return;
 									return (
-										<div>
+										<div key={index}>
 											<Similar
+												key={item.id}
 												onClick={() => onSimilarClick(item.id)}
 												bgphoto={makeImagePath(item.poster_path, "w300")}
 											/>
-											<span>{item.title}</span>
+											<span key={index}>{item.title}</span>
 										</div>
 									);
 								})}

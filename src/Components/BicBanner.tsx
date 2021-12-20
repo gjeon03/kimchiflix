@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { IMovie } from "../api";
+import { IMovie, ITv } from "../api";
 import { makeImagePath } from "../utils";
 
 const Banner = styled.div<{ bgPhoto: string }>`
@@ -35,18 +35,26 @@ const MovieInfo = styled.div`
 	}
 `;
 
-interface IProps {
-	data?: IMovie;
+interface IMovieProps {
+	data?: IMovie,
+	releaseDate?: string,
+	routeName: string,
 };
 
-function BicBanner({ data }: IProps) {
+interface ITvProps {
+	data?: ITv,
+	releaseDate?: string,
+	routeName: string,
+};
+
+function BicBanner({ data, releaseDate, routeName }: IMovieProps | ITvProps) {
 	return (
 		<Banner
 			bgPhoto={makeImagePath(data?.backdrop_path || "")}
 		>
-			<Title>{data?.title}</Title>
+			<Title>{routeName !== "tv" ? data?.title : data?.name}</Title>
 			<MovieInfo>
-				<span>{data?.release_date}</span>
+				<span>{releaseDate}</span>
 				<span>⭐️ {data?.vote_average} / 10</span>
 			</MovieInfo>
 			<Overview>{data?.overview}</Overview>
