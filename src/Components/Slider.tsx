@@ -1,9 +1,11 @@
 import styled from "styled-components";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { IGetMoviesResult } from "../api";
 import { makeImagePath, sliderTitleFind } from "../utils";
 import { useNavigate, useMatch } from "react-router-dom";
+import Detail from "./Detail";
 
 const SliderContent = styled.div`
 	width: 100%;
@@ -153,7 +155,7 @@ const sliderBtn = {
 
 interface IProps {
 	data?: IGetMoviesResult;
-	infoName?: string;
+	infoName: string;
 };
 
 function Slider({ data, infoName }: IProps) {
@@ -165,14 +167,16 @@ function Slider({ data, infoName }: IProps) {
 				window.innerWidth,
 			);
 		}
-		window.addEventListener("resize", handleResize); handleResize();
+		window.addEventListener("resize", handleResize);
+		handleResize();
 		setSliderTitle(sliderTitleFind(infoName as string) as string);
-	}, []);
+		return () => window.removeEventListener("resize", handleResize);
+	}, [infoName]);
 	const [offset, setOffet] = useState(6);
 	useEffect(() => {
 		const tmp = Math.floor(window.innerWidth / 150);
 		setOffet(tmp > 6 ? 6 : tmp);
-	}, [windowSize])
+	}, [windowSize]);
 	const navigate = useNavigate();
 	const bigMovieMatch = useMatch("/movies/:movieId");
 	const [leaving, setLeaving] = useState(false);
@@ -197,83 +201,88 @@ function Slider({ data, infoName }: IProps) {
 		navigate(`/movies/${movieId}`);
 	};
 	return (
-		<SliderContent>
-			<SlicerTitle>{sliderTitle}</SlicerTitle>
-			<MoviesMove>
-				<SliderLeftBox
-					onClick={() => incraseIndex(false)}
-					variants={sliderBtn}
-					whileHover="hover"
-					animate="visible"
-				>
-					<SliderBtn
-						xmlns="http://www.w3.org/2000/svg"
-						width="1024"
-						height="276.742"
-						viewBox="0 0 320 512"
-						fill="currentColor"
-					>
-						<path
-							d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"
-						></path>
-					</SliderBtn>
-				</SliderLeftBox>
-				<SliderRightBox
-					onClick={() => incraseIndex(true)}
-					variants={sliderBtn}
-					whileHover="hover"
-					animate="visible"
-				>
-					<SliderBtn
-						xmlns="http://www.w3.org/2000/svg"
-						width="1024"
-						height="276.742"
-						viewBox="0 0 320 512"
-						fill="currentColor"
-					>
-						<path
-							d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
-						></path>
-					</SliderBtn>
-				</SliderRightBox>
-			</MoviesMove>
-			<RowBox>
-				<AnimatePresence initial={false} onExitComplete={toggleLeaving}>
-					<Row
-						variants={rowVariants}
-						initial="hidden"
+		<>
+			<SliderContent>
+				<SlicerTitle>{sliderTitle}</SlicerTitle>
+				<MoviesMove>
+					<SliderLeftBox
+						onClick={() => incraseIndex(false)}
+						variants={sliderBtn}
+						whileHover="hover"
 						animate="visible"
-						exit="exit"
-						transition={{ type: "tween", duration: 1 }}
-						key={index}
-						custom={btnFlag}
 					>
-						{data?.results
-							.slice(1)
-							.slice(offset * index, offset * index + offset)
-							.map((movie) => (
-								<Box
-									layoutId={movie.id + (infoName as "")}
-									key={movie.id}
-									whileHover="hover"
-									initial="normal"
-									variants={boxVariants}
-									onClick={() => onBoxClicked(movie.id)}
-									transition={{ type: "tween" }}
-									bgphoto={makeImagePath(movie.poster_path, "w300")}
-								>
-									<Info variants={infoVariants}>
-										<h3>{movie.title}</h3>
-										<span>{movie.release_date}</span>
-										<span>⭐️ {movie.vote_average} / 10</span>
-									</Info>
-								</Box>
-							))}
-					</Row>
-				</AnimatePresence>
-			</RowBox>
-		</SliderContent>
+						<SliderBtn
+							xmlns="http://www.w3.org/2000/svg"
+							width="1024"
+							height="276.742"
+							viewBox="0 0 320 512"
+							fill="currentColor"
+						>
+							<path
+								d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z"
+							></path>
+						</SliderBtn>
+					</SliderLeftBox>
+					<SliderRightBox
+						onClick={() => incraseIndex(true)}
+						variants={sliderBtn}
+						whileHover="hover"
+						animate="visible"
+					>
+						<SliderBtn
+							xmlns="http://www.w3.org/2000/svg"
+							width="1024"
+							height="276.742"
+							viewBox="0 0 320 512"
+							fill="currentColor"
+						>
+							<path
+								d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
+							></path>
+						</SliderBtn>
+					</SliderRightBox>
+				</MoviesMove>
+				<RowBox>
+					<AnimatePresence initial={false} onExitComplete={toggleLeaving}>
+						<Row
+							variants={rowVariants}
+							initial="hidden"
+							animate="visible"
+							exit="exit"
+							transition={{ type: "tween", duration: 1 }}
+							key={index}
+							custom={btnFlag}
+						>
+							{data?.results
+								.slice(0)
+								.slice(offset * index, offset * index + offset)
+								.map((movie) => (
+									<Box
+										layoutId={infoName + movie.id}
+										key={movie.id}
+										whileHover="hover"
+										initial="normal"
+										variants={boxVariants}
+										onClick={() => onBoxClicked(movie.id)}
+										transition={{ type: "tween" }}
+										bgphoto={makeImagePath(movie.poster_path, "w300")}
+									>
+										<Info variants={infoVariants}>
+											<h3>{movie.title}</h3>
+											<span>{movie.release_date}</span>
+											<span>⭐️ {movie.vote_average} / 10</span>
+										</Info>
+									</Box>
+								))}
+						</Row>
+					</AnimatePresence>
+				</RowBox>
+			</SliderContent>
+			{bigMovieMatch ? (
+				<Detail id={bigMovieMatch.params.movieId} />
+			) : null}
+		</>
 	);
 }
 
-export default Slider;
+export default React.memo(Slider);

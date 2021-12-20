@@ -1,6 +1,6 @@
 const API_KEY = "f5fe15e46c765a1c3bf914a1973efc89";
 const BASE_PATH = "https://api.themoviedb.org/3";
-const LANGUAGE_PATH = "language=ko-Kore_KR";
+const LANGUAGE_PATH = "language=ko";
 
 export interface IMovie {
 	id: number;
@@ -50,6 +50,24 @@ export function getTopMovies() {
 
 export function getUpCmingMovies() {
 	return fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}
+
+export function getMovieDetail(movieId:string) {
+	return fetch(`${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}
+
+export function getVideos(movieId:string) {
+	return fetch(`${BASE_PATH}/movie/${movieId}/videos?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}
+
+export function getSimilarMovies(movieId:string) {
+	return fetch(`${BASE_PATH}/movie/${movieId}/similar?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
 		(response) => response.json()
 	);
 }

@@ -1,6 +1,5 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import { motion, AnimatePresence, useViewportScroll, useAnimation } from "framer-motion";
 import {
 	getNowMovies,
 	IGetMoviesResult,
@@ -8,9 +7,6 @@ import {
 	getTopMovies,
 	getUpCmingMovies
 } from "../api";
-import { makeImagePath } from "../utils";
-import { useEffect, useState } from "react";
-import { useNavigate, useMatch } from "react-router-dom";
 import BicBanner from "../Components/BicBanner";
 import Slider from "../Components/Slider";
 
@@ -34,12 +30,6 @@ const SliderContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 `;
-
-const Overlay = styled.div``;
-const BicMovie = styled.div``;
-const BicCover = styled.div``;
-const BicTitle = styled.h3``;
-const BigOverview = styled.p``;
 
 function Home() {
 	const { data: nowData, isLoading: nowLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getNowMovies);
