@@ -8,6 +8,15 @@ export interface IMovie {
 	poster_path: string;
 	title: string;
 	overview: string;
+	adult: boolean
+	genre_ids: []
+	original_language: string
+	original_title: string
+	popularity: 10213.258
+	release_date: string
+	video: false
+	vote_average: number
+	vote_count: number
 }
 
 export interface IGetMoviesResult {
@@ -21,8 +30,20 @@ export interface IGetMoviesResult {
 	total_results: number;
 }
 
-export function getMovies() {
+export function getNowMovies() {
 	return fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}
+
+export function getPopularMovies() {
+	return fetch(`${BASE_PATH}/movie/popular?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
+		(response) => response.json()
+	);
+}
+
+export function getTopMovies() {
+	return fetch(`${BASE_PATH}/movie/top_rated?api_key=${API_KEY}&${LANGUAGE_PATH}`).then(
 		(response) => response.json()
 	);
 }
