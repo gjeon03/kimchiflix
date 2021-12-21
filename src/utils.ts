@@ -2,30 +2,23 @@ export function makeImagePath(id: string, format?: string) {
 	return `https://image.tmdb.org/t/p/${format ? format : "original"}/${id}`;
 }
 
+export function selectData(movieDate:string, tvDate:string) {
+	if (movieDate !== "") return movieDate;
+	return tvDate;
+}
+
+export function selecRouteName(routeName:string){
+	if (routeName === "" || routeName === "movie") return "movies";
+	return routeName; 
+}
+
 export function sliderTitleFind(infoName: string) {
-	let title;
-	switch (infoName) {
-		case "now":
-			title = "Now Playing";
-			break;
-		case "popular":
-			title = "Popular";
-			break;
-		case "top":
-			title = "Top Rated";
-			break;
-		case "up":
-			title = "Up Coming";
-			break;
-		case "on":
-			title = "On The Air";
-			break;
-		case "air":
-			title = "Airing Today";
-			break;
-		case "top":
-			title = "Top Rated";
-			break;
-	}
-	return title;
+	if (infoName === "now") return "Now Playing";
+	else if (infoName === "popular") return "Popular";
+	else if (infoName === "top") return "Top Rated";
+	else if (infoName === "up") return "Up Coming";
+	else if (infoName === "on") return "On The Air";
+	else if (infoName === "air") return "Airing Today";
+	else if (infoName === "top") return "Top Rated";
+	return infoName;
 }

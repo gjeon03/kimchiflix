@@ -9,7 +9,9 @@ function App() {
     <Router>
       <Header />
       <Routes>
+        <Route path="/tv/:movieId" element={<Tv />} />
         <Route path="/tv" element={<Tv />} />
+        <Route path="/search/:search/:movieId" element={<Search />} />
         <Route path="/search" element={<Search />} />
         <Route path="/movies/:movieId" element={<Home />} />
         <Route path="/" element={<Home />} />

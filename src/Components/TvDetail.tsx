@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import React from "react";
 import { motion, useViewportScroll } from "framer-motion";
+import { useLocation } from "react-router";
 import {
-	getMovieDetail,
-	getSimilarMovies,
+	getTvDetail,
+	getSimilarTvs,
 } from "../api";
 import { makeImagePath } from "../utils";
 import { useNavigate } from "react-router-dom";
@@ -22,14 +22,14 @@ const Overlay = styled(motion.div)`
 	top: 0;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(0, 0, 0, 0.5);
 	opacity: 0;
 `;
 
 const BigMovie = styled(motion.div)`
 	position: absolute;
 	width: 70vw;
-	height: 150vh;
+	height: 960px;
 	left: 0;
 	right: 0;
 	margin: 0 auto;
@@ -64,21 +64,30 @@ const TitleBox = styled.div`
 	}
 `;
 
+const OriginalTitle = styled.div`
+	height: 20px;
+`;
+
 const BigTitle = styled.h3`
 	font-size: 46px;
 	position: relative;
 `;
 
 const Details = styled.div`
-	display: grid;
+	display: flex;
 	margin-left: 20px;
 	position: relative;
 	top: -60px;
-	grid-template-columns: 1fr 1fr 2fr 1fr 2fr;
 	font-weight: 400;
 `;
 
+const DetailSpan = styled.span`
+	margin-right: 10px;
+	margin-left: 10px;
+`;
+
 const BigOverview = styled.p`
+	height: 120px;
 	padding: 20px;
 	position: relative;
 	top: -60px;
@@ -140,20 +149,22 @@ const Similar = styled.div<{ bgphoto: string }>`
 	margin-bottom: 10px;
 `;
 
-interface IProps {
-	id?: string,
-	routeName?: string,
-};
-
-function Detail({ id, routeName }: IProps) {
-	const detail = useQuery<IDetail>("detail", () => getMovieDetail(id as string) as any);
-	const similar = useQuery<ISimilar>("similar", () => getSimilarMovies(id as string) as any);
+function TvDetail() {
+	const url = useLocation().pathname.split("/");
+	const location = useLocation();
+	const keyword = new URLSearchParams(location.search).get("keyword");
+	const { data: detailData, isLoading: detailLoading } = useQuery<IDetail>("detail", () => {
+		return getTvDetail(url[2] as string) as any;
+	});
+	const { data: similarData, isLoading: similarLoading } = useQuery<ISimilar>("similar", () => {
+		return getSimilarTvs(url[2] as string) as any;
+	});
 	const navigate = useNavigate();
 	const { scrollY } = useViewportScroll();
-	const onOverlayClick = () => navigate("/");
-	const onSimilarClick = (movieId: number) => {
-		navigate(`/${routeName}/${movieId}`);
-	}
+	const onOverlayClick = () => navigate(`/${url[1] === "tv" ? url[1]
+		: url[1] + "?keyword=" + keyword}`);
+	const onSimilarClick = (movieId: number) => navigate(`/${url[1]}/${movieId}`);
+	console.log(detailData);
 	return (
 		<>
 			<Overlay
@@ -164,33 +175,34 @@ function Detail({ id, routeName }: IProps) {
 			<BigMovie
 				style={{ top: scrollY.get() - 400 }}
 			>
-				{detail ? (
+				{detailLoading ? (<Loader>Loading...</Loader>
+				) : (
 					<DetailContainer>
 						<BigCover
-							bgphoto={makeImagePath(detail.data?.backdrop_path || "")}
+							bgphoto={makeImagePath(detailData?.backdrop_path || "")}
 						/>
 						<TitleBox>
-							<BigTitle>{detail.data?.title}</BigTitle>
-							<div>{detail.data?.original_title}</div>
+							<BigTitle>{detailData?.name || ""}</BigTitle>
+							<OriginalTitle>{detailData?.original_title}</OriginalTitle>
 						</TitleBox>
 						<Details>
-							<span>{detail.data?.release_date}</span>
-							<span>{detail.data?.runtime} min</span>
+							<DetailSpan>{detailData?.first_air_date || ""}</DetailSpan>
 							<div>
-								{detail.data?.genres.map((item, index) => {
+								{detailData?.genres.map((item, index) => {
 									if (index === 0) {
 										return <span key={index}>{item.name}</span>
 									}
 									return <span key={index}>/{item.name}</span>
 								})}
 							</div>
-							<span>⭐️{detail.data?.vote_average}/10</span>
+							<DetailSpan>⭐️{detailData?.vote_average}/10</DetailSpan>
 						</Details>
-						<BigOverview>{detail.data?.overview}</BigOverview>
+						<BigOverview>{detailData?.overview}</BigOverview>
 						<Companies>
 							<span>제작사</span>
 							<div>
-								{detail.data?.production_companies.map((item, index) => {
+								{detailData?.production_companies.map((item, index) => {
+									if (!item.logo_path) return;
 									return <CompaniesLogo key={index} bgphoto={makeImagePath(item.logo_path || "")} />
 								})}
 							</div>
@@ -198,26 +210,30 @@ function Detail({ id, routeName }: IProps) {
 						<SimilarContainer>
 							<h3>유사한 영화</h3>
 							<Poster>
-								{similar.data?.results.map((item, index) => {
-									if (index > 5) return;
-									return (
-										<div key={index}>
-											<Similar
-												key={item.id}
-												onClick={() => onSimilarClick(item.id)}
-												bgphoto={makeImagePath(item.poster_path, "w300")}
-											/>
-											<span key={index}>{item.title}</span>
-										</div>
-									);
-								})}
+								{similarLoading ? (<Loader>Loading...</Loader>
+								) : (
+									<>
+										{similarData?.results.slice(0, 6).map((item, index) => {
+											return (
+												<div key={index}>
+													<Similar
+														key={item.id}
+														onClick={() => onSimilarClick(item.id)}
+														bgphoto={makeImagePath(item.poster_path, "w300")}
+													/>
+													<span key={index}>{item.name}</span>
+												</div>
+											);
+										})}
+									</>
+								)}
 							</Poster>
 						</SimilarContainer>
 					</DetailContainer>
-				) : (<Loader>Loading...</Loader>)}
+				)}
 			</BigMovie>
 		</>
 	);
 }
 
-export default React.memo(Detail);
+export default TvDetail;

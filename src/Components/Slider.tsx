@@ -2,10 +2,10 @@ import styled from "styled-components";
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { IGetMoviesResult, IGetTvsResult } from "../api";
-import { makeImagePath, sliderTitleFind } from "../utils";
-import { useNavigate, useMatch } from "react-router-dom";
-import Detail from "./Detail";
+import { IGetApiDataResult } from "../types";
+import { makeImagePath, selecRouteName } from "../utils";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router";
 
 const SliderContent = styled.div`
 	width: 100%;
@@ -84,11 +84,13 @@ const Box = styled(motion.div) <{ bgphoto: string }>`
 
 const Info = styled(motion.div)`
 	padding: 10px;
-	background-color: ${(props) => props.theme.black.lighter};
+	background: linear-gradient(rgba(47, 47, 47, 0), rgba(47, 47, 47, 1));
 	opacity: 0;
 	display: flex;
 	flex-direction: column;
+	justify-content: end;
 	width: 100%;
+	height: 100%;
 	h3 {
 		font-size: 18px;
 	}
@@ -130,7 +132,7 @@ const boxVariants = {
 
 const infoVariants = {
 	hover: {
-		opacity: 0.8,
+		opacity: 1,
 		transition: {
 			delay: 0.5,
 			duaration: 0.1,
@@ -153,20 +155,12 @@ const sliderBtn = {
 	},
 };
 
-interface IMovieProps {
-	data?: IGetMoviesResult;
-	infoName: string;
-	routeName: string;
+interface IProps {
+	data?: IGetApiDataResult;
+	dataName: string;
 };
 
-interface ITvProps {
-	data?: IGetTvsResult;
-	infoName: string;
-	routeName: string;
-};
-
-function Slider({ data, infoName, routeName }: IMovieProps | ITvProps) {
-	const [sliderTitle, setSliderTitle] = useState("");
+function Slider({ data, dataName }: IProps) {
 	const [windowSize, setWindowSize] = useState<number | undefined>();
 	useEffect(() => {
 		function handleResize() {
@@ -176,16 +170,15 @@ function Slider({ data, infoName, routeName }: IMovieProps | ITvProps) {
 		}
 		window.addEventListener("resize", handleResize);
 		handleResize();
-		setSliderTitle(sliderTitleFind(infoName as string) as string);
 		return () => window.removeEventListener("resize", handleResize);
-	}, [infoName]);
+	}, []);
 	const [offset, setOffet] = useState(6);
 	useEffect(() => {
 		const tmp = Math.floor(window.innerWidth / 150);
 		setOffet(tmp > 6 ? 6 : tmp);
 	}, [windowSize]);
 	const navigate = useNavigate();
-	const bigMovieMatch = useMatch(`/${routeName}/:movieId`);
+	const routeName = selecRouteName(useLocation().pathname.split("/")[1]);
 	const [leaving, setLeaving] = useState(false);
 	const [index, setIndex] = useState(0);
 	const [btnFlag, setBtnFlag] = useState(true);
@@ -204,13 +197,19 @@ function Slider({ data, infoName, routeName }: IMovieProps | ITvProps) {
 		}
 	};
 	const toggleLeaving = () => setLeaving((prev) => !prev);
+	const location = useLocation();
 	const onBoxClicked = (movieId: number) => {
-		navigate(`/${routeName}/${movieId}`);
+		if (routeName === "search") {
+			const keyword = new URLSearchParams(location.search).get("keyword");
+			if (dataName === "Movies") return navigate(`/${routeName}/${movieId}/movie?keyword=${keyword}`);
+			return navigate(`/${routeName}/${movieId}/tv?keyword=${keyword}`);
+		}
+		return navigate(`/${routeName}/${movieId}`);
 	};
 	return (
 		<>
 			<SliderContent>
-				<SlicerTitle>{sliderTitle}</SlicerTitle>
+				<SlicerTitle>{dataName}</SlicerTitle>
 				<MoviesMove>
 					<SliderLeftBox
 						onClick={() => incraseIndex(false)}
@@ -265,7 +264,7 @@ function Slider({ data, infoName, routeName }: IMovieProps | ITvProps) {
 								.slice(offset * index, offset * index + offset)
 								.map((movie: any) => (
 									<Box
-										layoutId={infoName + movie.id}
+										layoutId={movie.id + (dataName.replace(" ", ""))}
 										key={movie.id}
 										whileHover="hover"
 										initial="normal"
@@ -275,7 +274,7 @@ function Slider({ data, infoName, routeName }: IMovieProps | ITvProps) {
 										bgphoto={makeImagePath(movie.poster_path, "w300")}
 									>
 										<Info variants={infoVariants}>
-											<h3>{routeName !== "tv" ? movie.title : movie.name}</h3>
+											<h3>{movie.title ? movie.title : movie.name}</h3>
 											<span>{movie.release_date}</span>
 											<span>⭐️ {movie.vote_average} / 10</span>
 										</Info>
@@ -285,11 +284,8 @@ function Slider({ data, infoName, routeName }: IMovieProps | ITvProps) {
 					</AnimatePresence>
 				</RowBox>
 			</SliderContent>
-			{bigMovieMatch ? (
-				<Detail id={bigMovieMatch.params.movieId} />
-			) : null}
 		</>
 	);
 }
 
-export default React.memo(Slider);
+export default Slider;

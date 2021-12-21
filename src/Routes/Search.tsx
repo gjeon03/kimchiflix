@@ -1,12 +1,14 @@
 import { useLocation } from "react-router";
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import {
-	IGetSearchResult,
-	getSearch,
-} from "../api";
+import { getMovieSearch, getTvSearch } from "../api";
 import BicBanner from "../Components/BicBanner";
 import Slider from "../Components/Slider";
+import { IGetApiDataResult } from "../types";
+import { useMatch } from "react-router-dom";
+import MovieDetail from "../Components/MovieDetail";
+import TvDetail from "../Components/TvDetail";
+import { sliderTitleFind } from "../utils";
 
 const Wrapper = styled.div`
 	background: black;
@@ -32,19 +34,35 @@ const SliderContainer = styled.div`
 function Search() {
 	const location = useLocation();
 	const keyword = new URLSearchParams(location.search).get("keyword");
-	const { data: data1, isLoading: isLoading1 } = useQuery<IGetSearchResult>(["search", "1"], () => getSearch(keyword as string, "1") as any);
+	const { data: movieData, isLoading: movieLoading } = useQuery<IGetApiDataResult>(["search", "movies"], () => getMovieSearch(keyword as string) as any);
+	const { data: tvData, isLoading: tvLoading } = useQuery<IGetApiDataResult>(["search", "tv"], () => getTvSearch(keyword as string) as any);
+	const bigMovieMatch = useMatch(`/search/:movieId/movie`);
+	const bigTvMatch = useMatch(`/search/:movieId/tv`);
+	const loading = movieLoading || tvLoading;
 	return (
 		<Wrapper>
-			{isLoading1 ? (<Loader>Loading...</Loader>
+			{movieLoading ? (<Loader>Loading...</Loader>
 			) : (
 				<>
-					<BicBanner
-						data={data1?.results[0]}
-						releaseDate={data1?.results[0].release_date ? data1?.results[0].release_date : data1?.results[0].first_air_date}
-						routeName={data1?.results[0].media_type === "movie" ? "movies" : "tv"}
-					/>
+					{loading ? (<Loader>Loading...</Loader>
+					) : (
+						<BicBanner data={movieData ? movieData?.results[0] : tvData?.results[0]} />
+					)}
 					<SliderContainer>
-						<Slider data={data1} infoName="now" routeName="search" />
+						{movieLoading ? (<Loader>Loading...</Loader>
+						) : (
+							<Slider data={movieData} dataName={"Movies"} />
+						)}
+						{tvLoading ? (<Loader>Loading...</Loader>
+						) : (
+							<Slider data={tvData} dataName={"TvShows"} />
+						)}
+						{bigMovieMatch ? (
+							<MovieDetail />
+						) : null}
+						{bigTvMatch ? (
+							<TvDetail />
+						) : null}
 					</SliderContainer>
 				</>
 			)}

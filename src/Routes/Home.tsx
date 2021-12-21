@@ -2,13 +2,16 @@ import { useQuery } from "react-query";
 import styled from "styled-components";
 import {
 	getNowMovies,
-	IGetMoviesResult,
 	getPopularMovies,
 	getTopMovies,
 	getUpCmingMovies
 } from "../api";
 import BicBanner from "../Components/BicBanner";
 import Slider from "../Components/Slider";
+import { IGetApiDataResult } from "../types";
+import { sliderTitleFind } from "../utils";
+import { useMatch } from "react-router-dom";
+import MovieDetail from "../Components/MovieDetail";
 
 const Wrapper = styled.div`
 	background: black;
@@ -32,30 +35,34 @@ const SliderContainer = styled.div`
 `;
 
 function Home() {
-	const { data: nowData, isLoading: nowLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getNowMovies);
-	const { data: popuarData, isLoading: popuarLoading } = useQuery<IGetMoviesResult>(["movie", "popular"], getPopularMovies);
-	const { data: topData, isLoading: topLoading } = useQuery<IGetMoviesResult>(["movie", "top"], getTopMovies);
-	const { data: upData, isLoading: upLoading } = useQuery<IGetMoviesResult>(["movie", "up"], getUpCmingMovies);
+	const { data: nowData, isLoading: nowLoading } = useQuery<IGetApiDataResult>(["movies", "nowPlaying"], getNowMovies);
+	const { data: popuarData, isLoading: popuarLoading } = useQuery<IGetApiDataResult>(["movie", "popular"], getPopularMovies);
+	const { data: topData, isLoading: topLoading } = useQuery<IGetApiDataResult>(["movie", "top"], getTopMovies);
+	const { data: upData, isLoading: upLoading } = useQuery<IGetApiDataResult>(["movie", "up"], getUpCmingMovies);
+	const bigMovieMatch = useMatch(`/movies/:movieId`);
 	return (
 		<Wrapper>
 			{nowLoading ? (<Loader>Loading...</Loader>
 			) : (
 				<>
-					<BicBanner data={nowData?.results[0]} releaseDate={nowData?.results[0].release_date} routeName="movies" />
+					<BicBanner data={nowData?.results[0]} />
 					<SliderContainer>
-						<Slider data={nowData} infoName="now" routeName="movies" />
+						<Slider data={nowData} dataName={sliderTitleFind("now")} />
 						{popuarLoading ? (<Loader>Loading...</Loader>
 						) : (
-							<Slider data={popuarData} infoName="popular" routeName="movies" />
+							<Slider data={popuarData} dataName={sliderTitleFind("popular")} />
 						)}
 						{topLoading ? (<Loader>Loading...</Loader>
 						) : (
-							<Slider data={topData} infoName="top" routeName="movies" />
+							<Slider data={topData} dataName={sliderTitleFind("top")} />
 						)}
 						{upLoading ? (<Loader>Loading...</Loader>
 						) : (
-							<Slider data={upData} infoName="up" routeName="movies" />
+							<Slider data={upData} dataName={sliderTitleFind("up")} />
 						)}
+						{bigMovieMatch ? (
+							<MovieDetail />
+						) : null}
 					</SliderContainer>
 				</>
 			)}

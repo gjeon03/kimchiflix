@@ -5,10 +5,12 @@ import {
 	getAiringTodayTv,
 	getPopularTv,
 	getTopRatedTv,
-	IGetTvsResult,
 } from "../api";
 import BicBanner from "../Components/BicBanner";
 import Slider from "../Components/Slider";
+import { IGetApiDataResult } from "../types";
+import { useMatch } from "react-router-dom";
+import TvDetail from "../Components/TvDetail";
 
 const Wrapper = styled.div`
 	background: black;
@@ -32,30 +34,35 @@ const SliderContainer = styled.div`
 `;
 
 function Tv() {
-	const { data: onData, isLoading: onLoading } = useQuery<IGetTvsResult>(["tv", "onTheAir"], getOnTheAirTv);
-	const { data: airData, isLoading: airLoading } = useQuery<IGetTvsResult>(["tv", "airingToday"], getAiringTodayTv);
-	const { data: popuarData, isLoading: popuarLoading } = useQuery<IGetTvsResult>(["tv", "popular"], getPopularTv);
-	const { data: topData, isLoading: topLoading } = useQuery<IGetTvsResult>(["tv", "topRated"], getTopRatedTv);
+	const { data: onData, isLoading: onLoading } = useQuery<IGetApiDataResult>(["tv", "onTheAir"], getOnTheAirTv);
+	const { data: airData, isLoading: airLoading } = useQuery<IGetApiDataResult>(["tv", "airingToday"], getAiringTodayTv);
+	const { data: popuarData, isLoading: popuarLoading } = useQuery<IGetApiDataResult>(["tv", "popular"], getPopularTv);
+	const { data: topData, isLoading: topLoading } = useQuery<IGetApiDataResult>(["tv", "topRated"], getTopRatedTv);
+	const bigTvMatch = useMatch(`/tv/:movieId`);
+	console.log(bigTvMatch);
 	return (
 		<Wrapper>
 			{onLoading ? (<Loader>Loading...</Loader>
 			) : (
 				<>
-					<BicBanner data={onData?.results[0]} releaseDate={onData?.results[0].first_air_date} routeName="tv" />
+					<BicBanner data={onData?.results[0]} />
 					<SliderContainer>
-						<Slider data={onData} infoName="on" routeName="tv" />
+						<Slider data={onData} dataName="on" />
 						{popuarLoading ? (<Loader>Loading...</Loader>
 						) : (
-							<Slider data={popuarData} infoName="popular" routeName="tv" />
+							<Slider data={popuarData} dataName="popular" />
 						)}
 						{airLoading ? (<Loader>Loading...</Loader>
 						) : (
-							<Slider data={airData} infoName="air" routeName="tv" />
+							<Slider data={airData} dataName="air" />
 						)}
 						{topLoading ? (<Loader>Loading...</Loader>
 						) : (
-							<Slider data={topData} infoName="top" routeName="tv" />
+							<Slider data={topData} dataName="top" />
 						)}
+						{bigTvMatch ? (
+							<TvDetail />
+						) : null}
 					</SliderContainer>
 				</>
 			)}
