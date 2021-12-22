@@ -8,7 +8,6 @@ import { IGetApiDataResult } from "../types";
 import { useMatch } from "react-router-dom";
 import MovieDetail from "../Components/MovieDetail";
 import TvDetail from "../Components/TvDetail";
-import { sliderTitleFind } from "../utils";
 
 const Wrapper = styled.div`
 	background: black;

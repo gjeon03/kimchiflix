@@ -1,6 +1,5 @@
-import styled from "styled-components";
-import React, { useRef } from "react";
-import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import React from "react";
+import { AnimatePresence, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 import { IGetApiDataResult } from "../types";
 import { makeImagePath, selecRouteName } from "../utils";
@@ -8,102 +7,18 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router";
 import { useSetRecoilState } from "recoil";
 import { layoutIdState } from "../atoms";
-
-const SliderContent = styled.div`
-	width: 100%;
-	height: 100%;
-	margin-bottom: 330px;
-`;
-
-const RowBox = styled.div`
-	position: relative;
-`;
-
-const Row = styled(motion.div)`
-	display: grid;
-	gap: 5px;
-	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-	width: 100%;
-	position: absolute;
-`;
-
-const MoviesMove = styled.div`
-	position:relative;
-	z-index: 99;
-`;
-
-const SlicerTitle = styled.span`
-	padding: 20px;
-	font-size: 30px;
-	font-weight: 400;
-`;
-
-const SliderLeftBox = styled(motion.div)`
-	height:300px;
-	position:absolute;
-	background-color: rgba(0, 0, 0, 0.5);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
-	left: 0;
-`;
-
-const SliderBtn = styled.svg`
-	width: 25px;
-	height: 100px;
-`;
-
-const SliderRightBox = styled(motion.div)`
-	height:300px;
-	position:absolute;
-	background-color: rgba(0, 0, 0, 0.5);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	cursor: pointer;
-	right: 0;
-`;
-
-const Box = styled(motion.div) <{ bgphoto: string }>`
-	background-color: white;
-	background-image: url(${(props) => props.bgphoto});
-	background-size: 100% 100%;
-	background-position: center center;
-	height: 300px;
-	font-size: 66px;
-	cursor: pointer;
-	width: 100%;
-	display: flex;
-	align-items: end;
-	&:first-child {
-		transform-origin: center left;
-	}
-	&:last-child {
-		transform-origin: center right;
-	}
-`;
-
-const Info = styled(motion.div)`
-	padding: 10px;
-	background: linear-gradient(rgba(47, 47, 47, 0), rgba(47, 47, 47, 1));
-	opacity: 0;
-	display: flex;
-	flex-direction: column;
-	justify-content: end;
-	width: 100%;
-	height: 100%;
-	h3 {
-		font-size: 18px;
-	}
-	span {
-		font-size: 15px;
-	}
-	h3, span {
-		text-align: center;
-		font-weight:400;
-	}
-`;
+import {
+	SliderContent,
+	RowBox,
+	Row,
+	MoviesMove,
+	SlicerTitle,
+	SliderLeftBox,
+	SliderBtn,
+	SliderRightBox,
+	Box,
+	Info
+} from "../Styles/slider";
 
 const rowVariants = {
 	hidden: (btnFlag: boolean) => ({
@@ -177,8 +92,8 @@ function Slider({ data, dataName }: IProps) {
 	}, []);
 	const [offset, setOffet] = useState(6);
 	useEffect(() => {
-		const tmp = Math.floor(window.innerWidth / 150);
-		setOffet(tmp > 6 ? 6 : tmp);
+		const tmp = Math.floor(window.innerWidth / 160);
+		setOffet(tmp > 5 ? 6 : tmp);
 	}, [windowSize]);
 	const navigate = useNavigate();
 	const routeName = selecRouteName(useLocation().pathname.split("/")[1]);

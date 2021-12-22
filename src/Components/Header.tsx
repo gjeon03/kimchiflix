@@ -1,92 +1,17 @@
-import styled from "styled-components";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Link, useMatch, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
-const Nav = styled(motion.div)`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	position: fixed;
-	width: 100%;
-	top: 0;
-	height: 66px;
-	font-size: 14px;
-	padding: 20px 60px;
-	color: white;
-	z-index:9999;
-`;
-
-const Col = styled.div`
-	display: flex;
-	align-items: center;
-`;
-
-const Logo = styled(motion.svg)`
-	margin-right: 50px;
-	width: 40px;
-	height: 30px;
-	fill: ${(props) => props.theme.red};
-	path {
-		stroke-width: 6px;
-		stroke: white;
-	}
-`;
-
-const Items = styled.ul`
-	display: flex;
-	align-items: center;
-`;
-
-const Item = styled.li`
-	margin-right: 20px;
-	color: ${(props) => props.theme.white.darker};
-	transition: color 0.3s ease-in-out;
-	position: relative;
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	font-weight: 500;
-	&:hover {
-		color: ${(props) => props.theme.white.lighter};
-	}
-`;
-
-const Search = styled.form`
-	color: white;
-	display: flex;
-	align-items: center;
-	position: relative;
-	svg {
-		height: 25px;
-	}
-`;
-
-const LightBox = styled(motion.span)`
-	width: 30px;
-	height: 5px;
-	position: absolute;
-	border-radius: 2.5px;
-	bottom: -7px;
-	left: 0;
-	right: 0;
-	margin: 0 auto;
-	background-color: ${(props) => props.theme.red};
-`;
-
-const Input = styled(motion.input)`
-	transform-origin: right center;
-	position: absolute;
-	right: 0px;
-	padding: 5px 10px;
-	padding-left: 40px;
-	z-index: -1;
-	color: white;
-	font-size: 16px;
-	background-color: transparent;
-	border: 1px solid ${(props) => props.theme.white.lighter};
-`;
+import {
+	Nav,
+	Col,
+	Logo,
+	Items,
+	Item,
+	Search,
+	LightBox,
+	Input
+} from "../Styles/header";
 
 const logoVariants = {
 	normal: {
@@ -105,7 +30,7 @@ const navVariants = {
 		backgroundColor: "rgba(0, 0, 0, 0)",
 	},
 	scroll: {
-		backgroundColor: "rgba(0, 0, 0, 0.7)",
+		backgroundColor: "rgba(0, 0, 0, 0.8)",
 	},
 };
 
