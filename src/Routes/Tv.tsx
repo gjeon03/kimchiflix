@@ -12,27 +12,11 @@ import { IGetApiDataResult } from "../types";
 import { useMatch } from "react-router-dom";
 import TvDetail from "../Components/TvDetail";
 import { sliderTitleFind } from "../utils";
-
-const Wrapper = styled.div`
-	background: black;
-	padding-bottom: 200px;
-`;
-
-const Loader = styled.div`
-	height:20vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
-
-const SliderContainer = styled.div`
-	position: relative;
-	top: -180px;
-	width: 100%;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-`;
+import Loader from "../Components/Loader";
+import {
+	Wrapper,
+	SliderContainer,
+} from "../Styles/route";
 
 function Tv() {
 	const { data: onData, isLoading: onLoading } = useQuery<IGetApiDataResult>(["tv", "onTheAir"], getOnTheAirTv);
@@ -42,21 +26,21 @@ function Tv() {
 	const bigTvMatch = useMatch(`/tv/:movieId`);
 	return (
 		<Wrapper>
-			{onLoading ? (<Loader>Loading...</Loader>
+			{onLoading ? (<Loader />
 			) : (
 				<>
 					<BicBanner data={onData?.results[0]} />
 					<SliderContainer>
 						<Slider data={onData} dataName={sliderTitleFind("on")} />
-						{popuarLoading ? (<Loader>Loading...</Loader>
+						{popuarLoading ? (<Loader />
 						) : (
 							<Slider data={popuarData} dataName={sliderTitleFind("popular")} />
 						)}
-						{airLoading ? (<Loader>Loading...</Loader>
+						{airLoading ? (<Loader />
 						) : (
 							<Slider data={airData} dataName={sliderTitleFind("air")} />
 						)}
-						{topLoading ? (<Loader>Loading...</Loader>
+						{topLoading ? (<Loader />
 						) : (
 							<Slider data={topData} dataName={sliderTitleFind("top")} />
 						)}

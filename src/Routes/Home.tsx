@@ -12,27 +12,11 @@ import { IGetApiDataResult } from "../types";
 import { sliderTitleFind } from "../utils";
 import { useMatch } from "react-router-dom";
 import MovieDetail from "../Components/MovieDetail";
-
-const Wrapper = styled.div`
-	background: black;
-	padding-bottom: 200px;
-`;
-
-const Loader = styled.div`
-	height:20vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
-
-const SliderContainer = styled.div`
-	position: relative;
-	top: -180px;
-	width: 100%;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-`;
+import Loader from "../Components/Loader";
+import {
+	Wrapper,
+	SliderContainer,
+} from "../Styles/route";
 
 function Home() {
 	const { data: nowData, isLoading: nowLoading } = useQuery<IGetApiDataResult>(["movies", "nowPlaying"], getNowMovies);
@@ -42,21 +26,21 @@ function Home() {
 	const bigMovieMatch = useMatch(`/movies/:movieId`);
 	return (
 		<Wrapper>
-			{nowLoading ? (<Loader>Loading...</Loader>
+			{nowLoading ? (<Loader />
 			) : (
 				<>
 					<BicBanner data={nowData?.results[0]} />
 					<SliderContainer>
 						<Slider data={nowData} dataName={sliderTitleFind("now")} />
-						{popuarLoading ? (<Loader>Loading...</Loader>
+						{popuarLoading ? (<Loader />
 						) : (
 							<Slider data={popuarData} dataName={sliderTitleFind("popular")} />
 						)}
-						{topLoading ? (<Loader>Loading...</Loader>
+						{topLoading ? (<Loader />
 						) : (
 							<Slider data={topData} dataName={sliderTitleFind("top")} />
 						)}
-						{upLoading ? (<Loader>Loading...</Loader>
+						{upLoading ? (<Loader />
 						) : (
 							<Slider data={upData} dataName={sliderTitleFind("up")} />
 						)}

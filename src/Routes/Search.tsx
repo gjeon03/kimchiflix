@@ -8,27 +8,11 @@ import { IGetApiDataResult } from "../types";
 import { useMatch } from "react-router-dom";
 import MovieDetail from "../Components/MovieDetail";
 import TvDetail from "../Components/TvDetail";
-
-const Wrapper = styled.div`
-	background: black;
-	padding-bottom: 200px;
-`;
-
-const Loader = styled.div`
-	height:20vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
-
-const SliderContainer = styled.div`
-	position: relative;
-	top: -180px;
-	width: 100%;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-`;
+import Loader from "../Components/Loader";
+import {
+	Wrapper,
+	SliderContainer,
+} from "../Styles/route";
 
 function Search() {
 	const location = useLocation();
@@ -40,19 +24,19 @@ function Search() {
 	const loading = movieLoading || tvLoading;
 	return (
 		<Wrapper>
-			{movieLoading ? (<Loader>Loading...</Loader>
+			{movieLoading ? (<Loader />
 			) : (
 				<>
-					{loading ? (<Loader>Loading...</Loader>
+					{loading ? (<Loader />
 					) : (
 						<BicBanner data={movieData ? movieData?.results[0] : tvData?.results[0]} />
 					)}
 					<SliderContainer>
-						{movieLoading ? (<Loader>Loading...</Loader>
+						{movieLoading ? (<Loader />
 						) : (
 							<Slider data={movieData} dataName={"Movies"} />
 						)}
-						{tvLoading ? (<Loader>Loading...</Loader>
+						{tvLoading ? (<Loader />
 						) : (
 							<Slider data={tvData} dataName={"TvShows"} />
 						)}
