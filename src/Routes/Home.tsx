@@ -60,10 +60,10 @@ function Home() {
 						) : (
 							<Slider data={upData} dataName={sliderTitleFind("up")} />
 						)}
-						{bigMovieMatch ? (
-							<MovieDetail />
-						) : null}
 					</SliderContainer>
+					{bigMovieMatch ? (
+						<MovieDetail />
+					) : null}
 				</>
 			)}
 		</Wrapper>

@@ -1,11 +1,13 @@
 import styled from "styled-components";
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
 import { IGetApiDataResult } from "../types";
 import { makeImagePath, selecRouteName } from "../utils";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router";
+import { useSetRecoilState } from "recoil";
+import { layoutIdState } from "../atoms";
 
 const SliderContent = styled.div`
 	width: 100%;
@@ -66,7 +68,7 @@ const SliderRightBox = styled(motion.div)`
 const Box = styled(motion.div) <{ bgphoto: string }>`
 	background-color: white;
 	background-image: url(${(props) => props.bgphoto});
-	background-size: cover;
+	background-size: 100% 100%;
 	background-position: center center;
 	height: 300px;
 	font-size: 66px;
@@ -126,6 +128,7 @@ const boxVariants = {
 			delay: 0.5,
 			duaration: 0.1,
 			type: "tween",
+			zIndex: 5,
 		},
 	},
 };
@@ -198,7 +201,12 @@ function Slider({ data, dataName }: IProps) {
 	};
 	const toggleLeaving = () => setLeaving((prev) => !prev);
 	const location = useLocation();
-	const onBoxClicked = (movieId: number) => {
+	const setLayoutIdAtom = useSetRecoilState(layoutIdState);
+	const boxAnimation = useAnimation();
+	const onBoxClicked = async (movieId: number, event: React.MouseEvent<HTMLDivElement>) => {
+		// event.currentTarget.style.zIndex = "99";
+		//boxAnimation.start("zIndex");
+		await setLayoutIdAtom(movieId + dataName.replace(" ", ""));
 		if (routeName === "search") {
 			const keyword = new URLSearchParams(location.search).get("keyword");
 			if (dataName === "Movies") return navigate(`/${routeName}/${movieId}/movie?keyword=${keyword}`);
@@ -269,7 +277,7 @@ function Slider({ data, dataName }: IProps) {
 										whileHover="hover"
 										initial="normal"
 										variants={boxVariants}
-										onClick={() => onBoxClicked(movie.id)}
+										onClick={(event) => onBoxClicked(movie.id, event as any)}
 										transition={{ type: "tween" }}
 										bgphoto={makeImagePath(movie.poster_path, "w300")}
 									>

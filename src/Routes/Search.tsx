@@ -57,13 +57,13 @@ function Search() {
 						) : (
 							<Slider data={tvData} dataName={"TvShows"} />
 						)}
-						{bigMovieMatch ? (
-							<MovieDetail />
-						) : null}
-						{bigTvMatch ? (
-							<TvDetail />
-						) : null}
 					</SliderContainer>
+					{bigMovieMatch ? (
+						<MovieDetail />
+					) : null}
+					{bigTvMatch ? (
+						<TvDetail />
+					) : null}
 				</>
 			)}
 		</Wrapper>

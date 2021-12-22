@@ -9,6 +9,9 @@ import { makeImagePath } from "../utils";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { IDetail, ISimilar } from "../types";
+import { useEffect } from "react";
+import { layoutIdState } from "../atoms";
+import { useRecoilValue } from "recoil";
 
 const Loader = styled.div`
   height: 20vh;
@@ -35,6 +38,7 @@ const BigMovie = styled(motion.div)`
 	margin: 0 auto;
 	border-radius: 15px;
 	overflow: hidden;
+	top: 0;
 	background-color: ${(props) => props.theme.black.lighter};
 `;
 
@@ -153,18 +157,23 @@ function TvDetail() {
 	const url = useLocation().pathname.split("/");
 	const location = useLocation();
 	const keyword = new URLSearchParams(location.search).get("keyword");
-	const { data: detailData, isLoading: detailLoading } = useQuery<IDetail>("detail", () => {
+	const { data: detailData, isLoading: detailLoading, refetch: detailRefetch } = useQuery<IDetail>("detail", () => {
 		return getTvDetail(url[2] as string) as any;
 	});
-	const { data: similarData, isLoading: similarLoading } = useQuery<ISimilar>("similar", () => {
+	const { data: similarData, isLoading: similarLoading, refetch: similarRefetch } = useQuery<ISimilar>("similar", () => {
 		return getSimilarTvs(url[2] as string) as any;
 	});
 	const navigate = useNavigate();
 	const { scrollY } = useViewportScroll();
 	const onOverlayClick = () => navigate(`/${url[1] === "tv" ? url[1]
 		: url[1] + "?keyword=" + keyword}`);
-	const onSimilarClick = (movieId: number) => navigate(`/${url[1]}/${movieId}`);
-	console.log(detailData);
+	const onSimilarClick = (movieId: number) => navigate(`/${url[1] !== "tv" ?
+		url[1] + "/" + movieId + "/movie?keyword=" + keyword : url[1] + "/" + movieId}`);
+	useEffect(() => {
+		detailRefetch();
+		similarRefetch();
+	}, [location]);
+	const layoutId = useRecoilValue(layoutIdState);
 	return (
 		<>
 			<Overlay
@@ -173,7 +182,8 @@ function TvDetail() {
 				animate={{ opacity: 1 }}
 			/>
 			<BigMovie
-				style={{ top: scrollY.get() - 400 }}
+				style={{ top: scrollY.get() + 70 }}
+				layoutId={layoutId}
 			>
 				{detailLoading ? (<Loader>Loading...</Loader>
 				) : (
@@ -208,7 +218,7 @@ function TvDetail() {
 							</div>
 						</Companies>
 						<SimilarContainer>
-							<h3>유사한 영화</h3>
+							<h3>Similar Tv Shows</h3>
 							<Poster>
 								{similarLoading ? (<Loader>Loading...</Loader>
 								) : (
