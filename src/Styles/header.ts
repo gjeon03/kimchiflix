@@ -83,4 +83,5 @@ export const Input = styled(motion.input)`
 	font-size: 16px;
 	background-color: transparent;
 	border: 1px solid ${(props) => props.theme.white.lighter};
+	border-radius: 10px;
 `;

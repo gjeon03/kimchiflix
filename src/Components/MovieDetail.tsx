@@ -1,4 +1,4 @@
-import { useViewportScroll, AnimatePresence } from "framer-motion";
+import { useViewportScroll } from "framer-motion";
 import { useLocation } from "react-router";
 import {
 	getMovieDetail,
@@ -52,78 +52,76 @@ function MovieDetail() {
 	}, [location, detailRefetch, similarRefetch]);
 	const layoutId = useRecoilValue(layoutIdState);
 	return (
-		<AnimatePresence>
-			<>
-				<Overlay
-					onClick={onOverlayClick}
-					exit={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					whileHover={{ zIndex: 5 }}
-				/>
-				<BigMovie
-					style={{ top: scrollY.get() + 70 }}
-					layoutId={layoutId}
-				>
-					{detailLoading ? (<Loader />
-					) : (
-						<DetailContainer>
-							<BigCover
-								bgphoto={makeImagePath(detailData?.backdrop_path || "")}
-							/>
-							<TitleBox>
-								<BigTitle>{detailData?.title || ""}</BigTitle>
-								<OriginalTitle>{detailData?.original_title}</OriginalTitle>
-							</TitleBox>
-							<Details>
-								<DetailSpan>{detailData?.release_date || ""}</DetailSpan>
-								<DetailSpan>{detailData?.runtime} min</DetailSpan>
-								<div>
-									{detailData?.genres.map((item, index) => {
-										if (index === 0) {
-											return <span key={index}>{item.name}</span>
-										}
-										return <span key={index}>/{item.name}</span>
-									})}
-								</div>
-								<DetailSpan>⭐️{detailData?.vote_average}/10</DetailSpan>
-							</Details>
-							<BigOverview>{detailData?.overview}</BigOverview>
-							<Companies>
-								<span>제작사</span>
-								<div>
-									{detailData?.production_companies.map((item, index) => {
-										if (!item.logo_path) return;
-										return <CompaniesLogo key={index} bgphoto={makeImagePath(item.logo_path || "")} />
-									})}
-								</div>
-							</Companies>
-							<SimilarContainer>
-								<h3>Similar Movies</h3>
-								<Poster>
-									{similarLoading ? (<Loader />
-									) : (
-										<>
-											{similarData?.results.slice(0, 6).map((item, index) => {
-												return (
-													<div key={index}>
-														<Similar
-															key={item.id}
-															onClick={() => onSimilarClick(item.id)}
-															bgphoto={makeImagePath(item.poster_path, "w200")}
-														/>
-														<span key={index}>{item.title}</span>
-													</div>
-												);
-											})}
-										</>
-									)}
-								</Poster>
-							</SimilarContainer>
-						</DetailContainer>
-					)}
-				</BigMovie>
-			</>
-		</AnimatePresence>
+		<>
+			<Overlay
+				onClick={onOverlayClick}
+				exit={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				whileHover={{ zIndex: 5 }}
+			/>
+			<BigMovie
+				style={{ top: scrollY.get() + 70 }}
+				layoutId={layoutId}
+			>
+				{detailLoading ? (<Loader />
+				) : (
+					<DetailContainer>
+						<BigCover
+							bgphoto={makeImagePath(detailData?.backdrop_path || "")}
+						/>
+						<TitleBox>
+							<BigTitle>{detailData?.title || ""}</BigTitle>
+							<OriginalTitle>{detailData?.original_title}</OriginalTitle>
+						</TitleBox>
+						<Details>
+							<DetailSpan>{detailData?.release_date || ""}</DetailSpan>
+							<DetailSpan>{detailData?.runtime} min</DetailSpan>
+							<div>
+								{detailData?.genres.map((item, index) => {
+									if (index === 0) {
+										return <span key={index}>{item.name}</span>
+									}
+									return <span key={index}>/{item.name}</span>
+								})}
+							</div>
+							<DetailSpan>⭐️{detailData?.vote_average}/10</DetailSpan>
+						</Details>
+						<BigOverview>{detailData?.overview}</BigOverview>
+						<Companies>
+							<span>제작사</span>
+							<div>
+								{detailData?.production_companies.map((item, index) => {
+									if (!item.logo_path) return;
+									return <CompaniesLogo key={index} bgphoto={makeImagePath(item.logo_path || "")} />
+								})}
+							</div>
+						</Companies>
+						<SimilarContainer>
+							<h3>Similar Movies</h3>
+							<Poster>
+								{similarLoading ? (<Loader />
+								) : (
+									<>
+										{similarData?.results.slice(0, 6).map((item, index) => {
+											return (
+												<div key={index}>
+													<Similar
+														key={item.id}
+														onClick={() => onSimilarClick(item.id)}
+														bgphoto={makeImagePath(item.poster_path, "w200")}
+													/>
+													<span key={index}>{item.title}</span>
+												</div>
+											);
+										})}
+									</>
+								)}
+							</Poster>
+						</SimilarContainer>
+					</DetailContainer>
+				)}
+			</BigMovie>
+		</>
 	);
 }
 

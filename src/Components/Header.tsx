@@ -72,7 +72,7 @@ function Header() {
 	return (
 		<Nav variants={navVariants} animate={navAnimation} initial={"top"}>
 			<Col>
-				<Link to="/">
+				<Link to="/kimchiflix">
 					<Logo
 						variants={logoVariants}
 						whileHover="active"
