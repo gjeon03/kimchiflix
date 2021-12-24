@@ -9,7 +9,7 @@ export const SliderContent = styled.div`
 
 export const RowBox = styled.div`
 	position: relative;
-	height: 330px;
+	height: 360px;
 `;
 
 export const Row = styled(motion.div)`
@@ -18,30 +18,34 @@ export const Row = styled(motion.div)`
 	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 	width: 100%;
 	position: absolute;
-	top: 0;
+	top: 10px;
 	height: auto;
 `;
 
 export const MoviesMove = styled.div`
-	position:relative;
-	z-index: 10;
+	width:100%;
+	height: 100%;
+	position:absolute;
+	display: flex;
+	justify-content: space-between;
 `;
 
 export const SliderTitle = styled.span`
 	padding: 10px;
+	height: 30px;
 	font-size: 30px;
 	font-weight: 400;
 `;
 
 export const SliderLeftBox = styled(motion.div)`
-	height:300px;
-	position:absolute;
+	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
 	left: 0;
+	z-index: 5;
 `;
 
 export const SliderBtn = styled.svg`
@@ -50,14 +54,14 @@ export const SliderBtn = styled.svg`
 `;
 
 export const SliderRightBox = styled(motion.div)`
-	height:300px;
-	position:absolute;
+	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
 	right: 0;
+	z-index: 5;
 `;
 
 export const Box = styled(motion.div) <{ bgphoto: string }>`
@@ -67,11 +71,11 @@ export const Box = styled(motion.div) <{ bgphoto: string }>`
 	//background-size: cover;
 	background-position: center center;
 	min-height: 200px;
-	max-height: 330px;
+	max-height: 340px;
 	font-size: 66px;
 	cursor: pointer;
 	width: 100%;
-	padding-top : calc(300 / 350 * 100%);
+	padding-top : calc(360 / 340 * 100%);
 	display: flex;
 	align-items: end;
 	&:first-child {
@@ -102,3 +106,115 @@ export const Info = styled(motion.div)`
 		font-weight:400;
 	}
 `;
+
+////---------------
+
+// export const SliderContent = styled.div`
+// 	display: grid;
+// 	grid-template-columns: 1fr;
+// `;
+
+// export const RowBox = styled.div`
+// 	position: relative;
+// 	background-color: pink;
+// 	/* padding-top : calc(360 / 350 * 100%); */
+// `;
+
+// export const RowContainer = styled.div`
+// 	width: 100%;
+// 	height: 100%;
+// 	position: relative;
+// 	background-color: red;
+// `;
+
+// export const Row = styled(motion.div)`
+// 	position: absolute;
+// 	width: 100%;
+// 	display: grid;
+// 	gap: 10px;
+// 	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+// `;
+
+// export const MoviesMove = styled.div`
+// 	position:absolute;
+// 	z-index: 10;
+// 	width: 100%;
+// 	height: 100%;
+// 	display: flex;
+// 	justify-content: space-between;
+// `;
+
+// export const SliderTitle = styled.span`
+// 	padding: 10px;
+// 	background-color: yellow;
+// 	font-size: 30px;
+// 	font-weight: 400;
+// `;
+
+// export const SliderLeftBox = styled(motion.div)`
+// 	height:100%;
+// 	background-color: rgba(0, 0, 0, 0.5);
+// 	display: flex;
+// 	justify-content: center;
+// 	align-items: center;
+// 	cursor: pointer;
+// 	left: 0;
+// `;
+
+// export const SliderBtn = styled.svg`
+// 	width: 30px;
+// 	height: 100px;
+// `;
+
+// export const SliderRightBox = styled(motion.div)`
+// 	height:100%;
+// 	background-color: rgba(0, 0, 0, 0.5);
+// 	display: flex;
+// 	justify-content: center;
+// 	align-items: center;
+// 	cursor: pointer;
+// 	right: 0;
+// `;
+
+// export const Box = styled(motion.div) <{ bgphoto: string }>`
+// 	background-color: white;
+// 	background-image: url(${(props) => props.bgphoto});
+// 	background-size: 100% 100%;
+// 	//background-size: cover;
+// 	background-position: center center;
+// 	/* min-height: 200px; */
+// 	max-height: 340px;
+// 	font-size: 66px;
+// 	cursor: pointer;
+// 	width: 100%;
+// 	padding-top : calc(360 / 350 * 100%);
+// 	display: flex;
+// 	align-items: end;
+// 	&:first-child {
+// 		transform-origin: center left;
+// 	}
+// 	&:last-child {
+// 		transform-origin: center right;
+// 	}
+// `;
+
+// export const Info = styled(motion.div)`
+// 	padding: 10px;
+// 	background: linear-gradient(rgba(47, 47, 47, 0), rgba(47, 47, 47, 1));
+// 	opacity: 0;
+// 	display: flex;
+// 	flex-direction: column;
+// 	justify-content: end;
+// 	width: 100%;
+// 	height: 100%;
+// 	h3 {
+// 		font-size: 18px;
+// 	}
+// 	span {
+// 		font-size: 15px;
+// 	}
+// 	h3, span {
+// 		text-align: center;
+// 		font-weight:400;
+// 	}
+// `;

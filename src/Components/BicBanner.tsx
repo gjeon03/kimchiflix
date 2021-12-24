@@ -6,6 +6,7 @@ import {
 	Overview,
 	MovieInfo
 } from "../Styles/bicBanner";
+import { useSetRecoilState } from "recoil";
 
 interface IProps {
 	data?: IApiData,
