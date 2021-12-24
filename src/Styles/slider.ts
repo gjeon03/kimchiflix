@@ -3,20 +3,23 @@ import { motion } from "framer-motion";
 
 export const SliderContent = styled.div`
 	width: 100%;
-	height: 100%;
-	margin-bottom: 330px;
+	height: auto;
+	//margin-bottom: 330px;
 `;
 
 export const RowBox = styled.div`
 	position: relative;
+	height: 330px;
 `;
 
 export const Row = styled(motion.div)`
 	display: grid;
-	gap: 5px;
+	gap: 10px;
 	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 	width: 100%;
 	position: absolute;
+	top: 0;
+	height: auto;
 `;
 
 export const MoviesMove = styled.div`
@@ -24,8 +27,8 @@ export const MoviesMove = styled.div`
 	z-index: 10;
 `;
 
-export const SlicerTitle = styled.span`
-	padding: 20px;
+export const SliderTitle = styled.span`
+	padding: 10px;
 	font-size: 30px;
 	font-weight: 400;
 `;
@@ -61,11 +64,14 @@ export const Box = styled(motion.div) <{ bgphoto: string }>`
 	background-color: white;
 	background-image: url(${(props) => props.bgphoto});
 	background-size: 100% 100%;
+	//background-size: cover;
 	background-position: center center;
-	height: 300px;
+	min-height: 200px;
+	max-height: 330px;
 	font-size: 66px;
 	cursor: pointer;
 	width: 100%;
+	padding-top : calc(300 / 350 * 100%);
 	display: flex;
 	align-items: end;
 	&:first-child {

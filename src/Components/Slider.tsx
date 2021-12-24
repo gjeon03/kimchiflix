@@ -1,5 +1,5 @@
 import React from "react";
-import { AnimatePresence, useAnimation } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { IGetApiDataResult } from "../types";
 import { makeImagePath, selecRouteName } from "../utils";
@@ -12,7 +12,7 @@ import {
 	RowBox,
 	Row,
 	MoviesMove,
-	SlicerTitle,
+	SliderTitle,
 	SliderLeftBox,
 	SliderBtn,
 	SliderRightBox,
@@ -92,7 +92,7 @@ function Slider({ data, dataName }: IProps) {
 	}, []);
 	const [offset, setOffet] = useState(6);
 	useEffect(() => {
-		const tmp = Math.floor(window.innerWidth / 160);
+		const tmp = Math.floor(window.innerWidth / 215);
 		setOffet(tmp > 5 ? 6 : tmp);
 	}, [windowSize]);
 	const navigate = useNavigate();
@@ -117,10 +117,8 @@ function Slider({ data, dataName }: IProps) {
 	const toggleLeaving = () => setLeaving((prev) => !prev);
 	const location = useLocation();
 	const setLayoutIdAtom = useSetRecoilState(layoutIdState);
-	const boxAnimation = useAnimation();
 	const onBoxClicked = async (movieId: number, event: React.MouseEvent<HTMLDivElement>) => {
-		// event.currentTarget.style.zIndex = "99";
-		//boxAnimation.start("zIndex");
+		// event.currentTarget.style.zIndex = "6";
 		await setLayoutIdAtom(movieId + dataName.replace(" ", ""));
 		if (routeName === "search") {
 			const keyword = new URLSearchParams(location.search).get("keyword");
@@ -132,7 +130,7 @@ function Slider({ data, dataName }: IProps) {
 	return (
 		<>
 			<SliderContent>
-				<SlicerTitle>{dataName}</SlicerTitle>
+				<SliderTitle>{dataName}</SliderTitle>
 				<MoviesMove>
 					<SliderLeftBox
 						onClick={() => incraseIndex(false)}
@@ -194,7 +192,7 @@ function Slider({ data, dataName }: IProps) {
 										variants={boxVariants}
 										onClick={(event) => onBoxClicked(movie.id, event as any)}
 										transition={{ type: "tween" }}
-										bgphoto={makeImagePath(movie.poster_path, "w300")}
+										bgphoto={makeImagePath(movie.poster_path, "w200")}
 									>
 										<Info variants={infoVariants}>
 											<h3>{movie.title ? movie.title : movie.name}</h3>

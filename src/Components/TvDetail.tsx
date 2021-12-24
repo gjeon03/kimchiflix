@@ -49,7 +49,7 @@ function TvDetail() {
 	useEffect(() => {
 		detailRefetch();
 		similarRefetch();
-	}, [location]);
+	}, [location, detailRefetch, similarRefetch]);
 	const layoutId = useRecoilValue(layoutIdState);
 	return (
 		<>
@@ -106,7 +106,7 @@ function TvDetail() {
 													<Similar
 														key={item.id}
 														onClick={() => onSimilarClick(item.id)}
-														bgphoto={makeImagePath(item.poster_path, "w300")}
+														bgphoto={makeImagePath(item.poster_path, "w200")}
 													/>
 													<span key={index}>{item.name}</span>
 												</div>

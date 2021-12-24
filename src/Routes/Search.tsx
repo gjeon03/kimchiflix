@@ -1,6 +1,5 @@
 import { useLocation } from "react-router";
 import { useQuery } from "react-query";
-import styled from "styled-components";
 import { getMovieSearch, getTvSearch } from "../api";
 import BicBanner from "../Components/BicBanner";
 import Slider from "../Components/Slider";

@@ -30,8 +30,6 @@ import {
 	Similar
 } from "../Styles/detail";
 
-
-
 function MovieDetail() {
 	const url = useLocation().pathname.split("/");
 	const location = useLocation();
@@ -51,7 +49,7 @@ function MovieDetail() {
 	useEffect(() => {
 		detailRefetch();
 		similarRefetch();
-	}, [location]);
+	}, [location, detailRefetch, similarRefetch]);
 	const layoutId = useRecoilValue(layoutIdState);
 	return (
 		<AnimatePresence>
@@ -60,6 +58,7 @@ function MovieDetail() {
 					onClick={onOverlayClick}
 					exit={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
+					whileHover={{ zIndex: 5 }}
 				/>
 				<BigMovie
 					style={{ top: scrollY.get() + 70 }}
@@ -110,7 +109,7 @@ function MovieDetail() {
 														<Similar
 															key={item.id}
 															onClick={() => onSimilarClick(item.id)}
-															bgphoto={makeImagePath(item.poster_path, "w300")}
+															bgphoto={makeImagePath(item.poster_path, "w200")}
 														/>
 														<span key={index}>{item.title}</span>
 													</div>
