@@ -13,6 +13,7 @@ import {
 	LeftBtn,
 	RightBtn,
 	MovieBtn,
+	TitileContainer
 } from "../Styles/home";
 
 
@@ -114,12 +115,14 @@ function Home() {
 							}}
 						/>
 					</AnimatePresence>
-					<Title>최신영화와 컨텐츠를 한눈에!</Title>
-					<MovieBtn
-						variants={movieBtn}
-						whileHover="hover"
-						onClick={onMovie}
-					>Go!</MovieBtn>
+					<TitileContainer>
+						<Title>최신영화와 컨텐츠를 한눈에!</Title>
+						<MovieBtn
+							variants={movieBtn}
+							whileHover="hover"
+							onClick={onMovie}
+						>Go!</MovieBtn>
+					</TitileContainer>
 					<RightBtn variants={moveBtn} whileHover="hover" className="next" onClick={() => paginate(-1)}>
 						{"<"}
 					</RightBtn>

@@ -34,14 +34,32 @@ export const MainImg = styled(motion.div) <{ bgphoto: string }>`
 	align-items: center;
 `;
 
-export const Title = styled.div`
+export const TitileContainer = styled.div`
 	position: absolute;
-	top: 250px;
+	top: 200px;
 	left: 100px;
+	z-index: 3;
+	display: flex;
+	flex-direction: column;
+`;
+
+export const Title = styled.div`
 	color: white;
 	font-size: 40px;
 	z-index: 5;
 	font-weight:600;
+`;
+
+export const MovieBtn = styled(motion.div)`
+	width: 70px;
+	z-index: 2;
+	border: 3px solid white;
+	border-radius: 20px;
+	font-size: 30px;
+	padding: 5px 10px;
+	font-weight: 600;
+	cursor: pointer;
+	display: block;
 `;
 
 const Btn = styled(motion.div)`
@@ -67,17 +85,4 @@ export const LeftBtn = styled(Btn)`
 export const RightBtn = styled(Btn)`
 	left: 10px;
 	background: rgba(255, 255, 255, 0.5);
-`;
-
-export const MovieBtn = styled(motion.div)`
-	position: absolute;
-	top: 320px;
-	left: 100px;
-	z-index: 2;
-	border: 3px solid white;
-	border-radius: 20px;
-	font-size: 30px;
-	padding: 5px 10px;
-	font-weight: 600;
-	cursor: pointer;
 `;
