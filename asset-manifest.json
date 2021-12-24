@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/kimchiflix/static/js/main.73e5ad98.js",
+    "main.js": "/kimchiflix/static/js/main.900d7159.js",
     "index.html": "/kimchiflix/index.html",
-    "main.73e5ad98.js.map": "/kimchiflix/static/js/main.73e5ad98.js.map"
+    "main.900d7159.js.map": "/kimchiflix/static/js/main.900d7159.js.map"
   },
   "entrypoints": [
-    "static/js/main.73e5ad98.js"
+    "static/js/main.900d7159.js"
   ]
 }
