@@ -16,6 +16,7 @@ import {
 	Wrapper,
 	SliderContainer,
 } from "../Styles/route";
+import { Helmet } from "react-helmet-async";
 
 function Tv() {
 	const { data: onData, isLoading: onLoading } = useQuery<IGetApiDataResult>(["tv", "onTheAir"], getOnTheAirTv);
@@ -25,6 +26,9 @@ function Tv() {
 	const bigTvMatch = useMatch(`/tv/:movieId`);
 	return (
 		<Wrapper>
+			<Helmet>
+				<title>Tv Show</title>
+			</Helmet>
 			{onLoading ? (<Loader />
 			) : (
 				<>

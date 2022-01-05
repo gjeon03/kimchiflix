@@ -88,7 +88,7 @@ function Header() {
 				<Items>
 					<Item>
 						<Link to="/">
-							Home {homeMatch && <LightBox layoutId="lightBox" />}
+							Movie {homeMatch && <LightBox layoutId="lightBox" />}
 						</Link>
 					</Item>
 					<Item>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { useSetRecoilState } from "recoil";
 import { layoutIdState } from "../atoms";
@@ -54,7 +53,6 @@ function SliderBox({ ...movie }: IProps) {
 	const setLayoutIdAtom = useSetRecoilState(layoutIdState);
 	const navigate = useNavigate();
 	const onBoxClicked = async (movieId: number, event: React.MouseEvent<HTMLDivElement>) => {
-		setZIndex(200);
 		await setLayoutIdAtom(movieId + movie.dataName.replace(" ", ""));
 		if (routeName === "search") {
 			const keyword = new URLSearchParams(location.search).get("keyword");
@@ -62,11 +60,6 @@ function SliderBox({ ...movie }: IProps) {
 			return navigate(`/${routeName}/${movieId}/tv?keyword=${keyword}`);
 		}
 		return navigate(`/${routeName}/${movieId}`);
-	};
-	//zIndex change
-	const [zIndex, setZIndex] = useState(100);
-	const zIndexChangeHandler = () => {
-		setZIndex(100);
 	};
 	return (
 		<Box
@@ -78,7 +71,6 @@ function SliderBox({ ...movie }: IProps) {
 			onClick={(event) => onBoxClicked(movie.id, event as any)}
 			transition={{ type: "tween" }}
 			bgphoto={makeImagePath(movie.poster_path, "w200")}
-			onLayoutAnimationComplete={zIndexChangeHandler}
 		>
 			<Info variants={infoVariants}>
 				<h3>{movie.title ? movie.title : movie.name}</h3>

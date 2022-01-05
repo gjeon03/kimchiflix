@@ -15,6 +15,7 @@ import {
 	MovieBtn,
 	TitileContainer
 } from "../Styles/home";
+import { Helmet } from "react-helmet-async";
 
 
 
@@ -85,6 +86,9 @@ function Home() {
 	}
 	return (
 		<>
+			<Helmet>
+				<title>Home</title>
+			</Helmet>
 			{ isLoading ? (<Loader />
 			) : (
 				<MainMotion>

@@ -6,6 +6,7 @@ import { createGlobalStyle } from "styled-components";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { theme } from "./theme";
 import { RecoilRoot } from "recoil";
+import { HelmetProvider } from "react-helmet-async";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap');
@@ -74,16 +75,19 @@ a {
 `;
 
 const client = new QueryClient();
+const helmetContext = {};
 
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <RecoilRoot>
-          <GlobalStyle />
-          <App />
-        </RecoilRoot>
-      </ThemeProvider>
+      <HelmetProvider context={helmetContext}>
+        <ThemeProvider theme={theme}>
+          <RecoilRoot>
+            <GlobalStyle />
+            <App />
+          </RecoilRoot>
+        </ThemeProvider>
+      </HelmetProvider>
     </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById('root')

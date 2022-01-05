@@ -12,6 +12,7 @@ import {
 	Wrapper,
 	SliderContainer,
 } from "../Styles/route";
+import { Helmet } from "react-helmet-async";
 
 function Search() {
 	const location = useLocation();
@@ -23,6 +24,9 @@ function Search() {
 	const loading = movieLoading || tvLoading;
 	return (
 		<Wrapper>
+			<Helmet>
+				<title>Search</title>
+			</Helmet>
 			{movieLoading ? (<Loader />
 			) : (
 				<>

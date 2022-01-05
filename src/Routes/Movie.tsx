@@ -16,6 +16,7 @@ import {
 	Wrapper,
 	SliderContainer,
 } from "../Styles/route";
+import { Helmet } from "react-helmet-async";
 
 function Movie() {
 	const { data: nowData, isLoading: nowLoading } = useQuery<IGetApiDataResult>(["movies", "nowPlaying"], getNowMovies);
@@ -25,6 +26,9 @@ function Movie() {
 	const bigMovieMatch = useMatch(`/movies/:movieId`);
 	return (
 		<Wrapper>
+			<Helmet>
+				<title>Movie</title>
+			</Helmet>
 			{nowLoading ? (<Loader />
 			) : (
 				<>
