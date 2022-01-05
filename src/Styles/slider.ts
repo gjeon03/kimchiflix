@@ -88,7 +88,7 @@ export const Box = styled(motion.div) <{ bgphoto: string }>`
 
 export const Info = styled(motion.div)`
 	padding: 10px;
-	background: linear-gradient(rgba(47, 47, 47, 0), rgba(47, 47, 47, 1));
+	background: rgba(47, 47, 47, 1);
 	opacity: 0;
 	display: flex;
 	flex-direction: column;

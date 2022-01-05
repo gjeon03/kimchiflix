@@ -1,12 +1,6 @@
-import React from "react";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { IGetApiDataResult } from "../types";
-import { makeImagePath, selecRouteName } from "../utils";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router";
-import { useSetRecoilState } from "recoil";
-import { layoutIdState } from "../atoms";
 import {
 	SliderContent,
 	RowBox,
@@ -16,9 +10,8 @@ import {
 	SliderLeftBox,
 	SliderBtn,
 	SliderRightBox,
-	Box,
-	Info,
 } from "../Styles/slider";
+import SliderBox from "./SliderBox";
 
 const rowVariants = {
 	hidden: (btnFlag: boolean) => ({
@@ -30,33 +23,6 @@ const rowVariants = {
 	exit: (btnFlag: boolean) => ({
 		x: btnFlag ? -window.outerWidth : window.outerWidth,
 	}),
-};
-
-const boxVariants = {
-	normal: {
-		scale: 1,
-	},
-	hover: {
-		scale: 1.3,
-		y: -80,
-		transition: {
-			delay: 0.5,
-			duaration: 0.1,
-			type: "tween",
-			zIndex: 5,
-		},
-	},
-};
-
-const infoVariants = {
-	hover: {
-		opacity: 1,
-		transition: {
-			delay: 0.5,
-			duaration: 0.1,
-			type: "tween",
-		},
-	},
 };
 
 const sliderBtn = {
@@ -95,8 +61,6 @@ function Slider({ data, dataName }: IProps) {
 		const tmp = Math.floor(window.innerWidth / 215);
 		setOffet(tmp > 5 ? 6 : tmp);
 	}, [windowSize]);
-	const navigate = useNavigate();
-	const routeName = selecRouteName(useLocation().pathname.split("/")[1]);
 	const [leaving, setLeaving] = useState(false);
 	const [index, setIndex] = useState(0);
 	const [btnFlag, setBtnFlag] = useState(true);
@@ -115,18 +79,6 @@ function Slider({ data, dataName }: IProps) {
 		}
 	};
 	const toggleLeaving = () => setLeaving((prev) => !prev);
-	const location = useLocation();
-	const setLayoutIdAtom = useSetRecoilState(layoutIdState);
-	const onBoxClicked = async (movieId: number, event: React.MouseEvent<HTMLDivElement>) => {
-		// event.currentTarget.style.zIndex = "6";
-		await setLayoutIdAtom(movieId + dataName.replace(" ", ""));
-		if (routeName === "search") {
-			const keyword = new URLSearchParams(location.search).get("keyword");
-			if (dataName === "Movies") return navigate(`/${routeName}/${movieId}/movie?keyword=${keyword}`);
-			return navigate(`/${routeName}/${movieId}/tv?keyword=${keyword}`);
-		}
-		return navigate(`/${routeName}/${movieId}`);
-	};
 	return (
 		<>
 			<SliderContent>
@@ -183,23 +135,8 @@ function Slider({ data, dataName }: IProps) {
 							{data?.results
 								.slice(0)
 								.slice(offset * index, offset * index + offset)
-								.map((movie: any) => (
-									<Box
-										layoutId={movie.id + (dataName.replace(" ", ""))}
-										key={movie.id}
-										whileHover="hover"
-										initial="normal"
-										variants={boxVariants}
-										onClick={(event) => onBoxClicked(movie.id, event as any)}
-										transition={{ type: "tween" }}
-										bgphoto={makeImagePath(movie.poster_path, "w200")}
-									>
-										<Info variants={infoVariants}>
-											<h3>{movie.title ? movie.title : movie.name}</h3>
-											<span>{movie.release_date}</span>
-											<span>⭐️ {movie.vote_average} / 10</span>
-										</Info>
-									</Box>
+								.map((movie: any, index) => (
+									<SliderBox key={index} {...{ ...movie, dataName }} />
 								))}
 						</Row>
 					</AnimatePresence>
