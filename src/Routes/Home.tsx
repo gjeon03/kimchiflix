@@ -69,12 +69,9 @@ function Home() {
 		if (data?.results.length as number - 1 < page + newDirection) {
 			setPage([0, newDirection]);
 		} else if (0 > page + newDirection) {
-			console.log("hello")
 			setPage([data?.results.length as number - 1, newDirection]);
-			console.log(data?.results.length as number - 1);
 		} else {
 			setPage([page + newDirection, newDirection]);
-			console.log(page + newDirection, newDirection);
 		}
 	};
 	const swipeConfidenceThreshold = 10000;
