@@ -1,3 +1,5 @@
+배포 사이트 : https://gjeon03.github.io/kimchiflix
+
 # 설명
 
 최신, 인기 등의 영화 및 티비쇼를 보여주는 웹 사이트 입니다.
